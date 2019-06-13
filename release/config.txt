@@ -1,0 +1,70 @@
+# Globally-Optimal Spherical Mixture Alignment (GOSMA)
+# Copyright (C) 2019 Dylan John Campbell
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+#
+# Contact Details:
+# dylan.campbell@anu.edu.au
+# Brian Anderson Building 115, North Road,
+# Australian National University, Canberra ACT 2600, Australia
+#
+# Any publications resulting from the use of this code should cite the
+# following paper:
+#
+# Dylan Campbell, Lars Petersson, Laurent Kneip, Hongdong Li and Stephen Gould,
+# "The Alignment of the Spheres: Globally-Optimal Spherical Mixture Alignment
+# for Camera Pose Estimation", IEEE Conference on Computer Vision and Pattern
+# Recognition (CVPR), Long Beach, USA, IEEE, Jun. 2019
+#
+# For the full license, see LICENCE.md in the root directory
+# 
+# Author: Dylan Campbell
+# Date: 20190612
+# Revision: 2.0
+#
+#####################################################################################################
+## Branch-and-Bound Parameters
+#####################################################################################################
+# Tolerance for epsilon-optimality: largest permissable gap between the lower
+# bound and the discovered optimal value
+epsilon=0.1
+
+# Minimum distance zeta > 0 between the camera and the closest 3D point
+zeta=0.5
+
+# Minimum linear resolution for translation (>= 0): translation sub-cuboids
+# that fit within a sphere of this radius are not branched
+min_linear_resolution=0.1
+
+# Minimum angular resolution for rotation (>= 0): rotation sub-cubes that fit
+# within a sphere of this radius (in radians) are not branched
+min_angular_resolution=0.01745
+
+# Factor by which to expand the largest dimension of the translation domain
+# The two smaller dimensions will be padded by the same amount as the largest
+# dimension
+# Not used if a translation domain file is supplied to the program
+# Set to 1.0 if the camera is known to be inside the axis-aligned bounding box
+# of the point-set
+translation_domain_expansion_factor=0.8
+
+# Euclidean lambda parameter for 3D point clustering. A new cluster is created
+# when a point is > lambda from every existing cluster centroid
+lambda_euclidean=2.0
+
+# Spherical lambda parameter in degrees for bearing vector clustering. A new
+# cluster is created when a point is > lambda from every existing cluster
+# centroid
+lambda_spherical_degrees=20.0
