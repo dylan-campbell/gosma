@@ -286,8 +286,6 @@ __global__ void GetBounds(Node* d_parent_nodes_, Node* d_nodes_) {
     log_phis_on_z_kappas_3d[i] = log_phi_3d - LogZFunction(kappas_3d[i]);
     log_phis_on_z_kappas_lb_3d[i] = log_phi_3d - LogZFunction(kappas_lb_3d[i]);
     log_phis_on_z_kappas_ub_3d[i] = log_phi_3d - LogZFunction(kappas_ub_3d[i]);
-    if (kappas_3d[i] < 1.0f)
-      printf("kappa3d (%f) < 1!\n", kappas_3d[i]);
   }
 
   /*
@@ -1277,6 +1275,15 @@ bool GOSMA::CheckInputs() {
     std::cout << "3D mixture has not been loaded" << std::endl;
     return false;
   }
+  // Check whether mixtures exceed the maximum number permitted
+  if (mus_2d_.rows() > GOSMA::kMaxNumComponents) {
+    std::cout << "2D mixture has too many components (" << mus_2d_.rows() << " > " << GOSMA::kMaxNumComponents << ")" << std::endl;
+    return false;
+  }
+  if (mus_3d_.rows() > GOSMA::kMaxNumComponents) {
+    std::cout << "3D mixture has too many components (" << mus_3d_.rows() << " > " << GOSMA::kMaxNumComponents << ")" << std::endl;
+    return false;
+  }
   // Check validity of config options
   if (epsilon_ <= 0) {
     std::cout << "A valid epsilon value has not been provided" << std::endl;
@@ -1322,8 +1329,7 @@ void GOSMA::Initialise() {
       class_num_components_3d_, log_class_weights_);
   cppoptlib::Criteria<double> stopping_criteria =
       cppoptlib::Criteria<double>::defaults();  // Create a Criteria class to set the solver's stop conditions
-//  stopping_criteria.iterations = 100; //!< Maximum number of iterations (10000) - NICTA
-  stopping_criteria.iterations = 200;  //!< Maximum number of iterations (10000) - other experiments
+  stopping_criteria.iterations = 200;  //!< Maximum number of iterations (10000)
 //  stopping_criteria.xDelta = 1e-4;        //!< Minimum change in parameter vector (0)
 //  stopping_criteria.fDelta = 0;        //!< Minimum change in cost function (0)
 //  stopping_criteria.gradNorm = 1e-4;   //!< Minimum norm of gradient vector (1e-4)
